@@ -10,4 +10,6 @@ Contains the source code for the USB device, which is intended to run on a Raspb
 ## Host
 Contains the python code to visualize the data streamed from the USB device. 
 
-Please note that I have been using a Python environment in visual studio community. I have been running Python 3.13. Just for this code to run, you'll need to add an environment with Name *venv* and as base interpreter you could choose the Python 3.13. In the Host folder, you'll find a requirements.txt file that should be selected in "Install packages from file" so you get the correct dependencies in that environment.
+Please note that I have been using a Python environment in visual studio community. I have been running Python 3.13. Just for this code to run, you'll need to add an environment with Name *venv* and as base interpreter you could choose the Python 3.13. In the Host folder, you'll find a requirements.txt file that should be selected in "Install packages from file" so you get the correct dependencies in that environment. Cf. green arrows in the image below.
+
+![add-environment](add-environment.jpg)
