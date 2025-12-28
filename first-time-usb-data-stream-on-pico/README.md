@@ -6,7 +6,7 @@ This code goes with the corresponding [EmbeddedJourneys blog post](https://embed
 
 This folder contains the following 2 subfolders:
 
-## firmware
+## Firmware
 Contains the source code for the USB device, which is intended to run on a Raspberry Pi Pico 2W (A Pico 2 should work as well though)
 
 ## Host
