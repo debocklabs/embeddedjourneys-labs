@@ -8,6 +8,8 @@
 
 // --- Simple ring buffer for produced data ---
 #define RING_SIZE (8 * 1024)
+static_assert((RING_SIZE & (RING_SIZE - 1)) == 0, "RING_SIZE must be a power of two");
+
 static uint8_t ring[RING_SIZE];
 static volatile uint32_t ring_head = 0; //write index
 static volatile uint32_t ring_tail = 0; //read index
@@ -23,7 +25,7 @@ static inline uint32_t ring_available_read(void)
 static inline void ring_write_byte(uint8_t b) {
     if (ring_available_write() == 0) return; // drop if full
     ring[ring_head] = b;
-    ring_head = (ring_head + 1) & (RING_SIZE - 1);
+    ring_head = (ring_head + 1) & (RING_SIZE - 1); // Reason why RING_SIZE must be a power of 2
 }
 static inline uint32_t ring_read(uint8_t *dst, uint32_t max_len) {
     uint32_t avail = ring_available_read();
@@ -31,7 +33,7 @@ static inline uint32_t ring_read(uint8_t *dst, uint32_t max_len) {
     if (avail > max_len) avail = max_len;
     for (uint32_t i = 0; i < avail; ++i) {
         dst[i] = ring[ring_tail];
-        ring_tail = (ring_tail + 1) & (RING_SIZE - 1);
+        ring_tail = (ring_tail + 1) & (RING_SIZE - 1); // Reason why RING_SIZE must be a power of 2
     }
     return avail;
 }
