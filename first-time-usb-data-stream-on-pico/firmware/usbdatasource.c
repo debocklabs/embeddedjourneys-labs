@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "pico/time.h"   //for repeating_timer
-#include "pico/double.h" //for cos()
+#include "pico/time.h"   // For repeating_timer
+#include "pico/double.h" // For cos()
 
 #include "tusb.h"
 #include "tusb_config.h"
@@ -11,8 +11,8 @@
 static_assert((RING_SIZE & (RING_SIZE - 1)) == 0, "RING_SIZE must be a power of two");
 
 static uint8_t ring[RING_SIZE];
-static volatile uint32_t ring_head = 0; //write index
-static volatile uint32_t ring_tail = 0; //read index
+static volatile uint32_t ring_head = 0; // Write index
+static volatile uint32_t ring_tail = 0; // Read index
 static inline uint32_t ring_available_write(void) {
     if (ring_head >= ring_tail) return RING_SIZE - (ring_head - ring_tail) - 1;
     return (ring_tail - ring_head) - 1;
@@ -23,7 +23,7 @@ static inline uint32_t ring_available_read(void)
     return RING_SIZE - (ring_tail - ring_head);
 }
 static inline void ring_write_byte(uint8_t b) {
-    if (ring_available_write() == 0) return; // drop if full
+    if (ring_available_write() == 0) return; // Drop if full
     ring[ring_head] = b;
     ring_head = (ring_head + 1) & (RING_SIZE - 1); // Reason why RING_SIZE must be a power of 2
 }
@@ -52,13 +52,13 @@ bool producer_cb(repeating_timer_t *rt) {
 // --- Try to send one packet of up to 64 bytes ---
 static void usb_try_send_stream(void) {
     if (!tud_vendor_mounted()) return;
-    if (!tud_vendor_write_available()) return; //endpoint buffer busy
+    if (!tud_vendor_write_available()) return; // Endpoint buffer busy
     uint8_t buf[64];
     uint32_t n = ring_read(buf, sizeof(buf));
-    if (n == 0) return; //No data yet
+    if (n == 0) return; // No data yet
     uint32_t written = tud_vendor_write(buf, n);
     (void)written;
-    tud_vendor_flush(); //hand off to USB controller
+    tud_vendor_flush(); // Hand off to USB controller
 }
 
 int main()
